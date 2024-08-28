@@ -60,7 +60,7 @@ export class App {
   useJwtValidMiddleware(handler: (req: any, res: any, next: any) => void) {
     this._app.use((req, res, next) => {
       this.options.allowAnonymousPath.filter(
-        (x) => req.url.match(x.path) && x.method === req.method,
+        (x) => req.url.match(x.path) && req.method.match(x.method),
       ).length > 0
         ? next()
         : handler(req, res, next);
@@ -79,7 +79,7 @@ export class App {
   }
 
   run() {
-    const port = this.env.PORT | 3000;
+    const port = parseInt(this.env.PORT) || 3000;
     this._app.listen(port, () => {
       console.log(
         `Listening on port http://localhost:${port}${this.options.routerPrefix}`,

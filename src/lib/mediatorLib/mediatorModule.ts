@@ -7,7 +7,7 @@ import { ISender } from "./interfaces/ISender";
 import { IPublisher } from "./interfaces/IPublisher";
 import { MEDIATOR_TYPES } from "./types";
 
-export class mediatorModule extends Module {
+export class MediatorModule extends Module {
   constructor(
     private readonly _container: Container,
     private readonly _mediatorMap: any,
