@@ -7,9 +7,17 @@ export abstract class BaseController {
   abstract apiPath: string;
   abstract mapRoutes(): Router;
 
-  asyncWrapper(fn: any) {
+  private asyncWrapper(fn: any) {
     return (req: any, res: any, next: any) => {
       Promise.resolve(fn(req, res, next)).catch((err) => next(err));
     };
+  }
+
+  private bind(instance: any, fn: Function) {
+    return fn.bind(instance);
+  }
+
+  action(fn: Function) {
+    return this.asyncWrapper(this.bind(this, fn));
   }
 }

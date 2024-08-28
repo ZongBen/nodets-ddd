@@ -3,6 +3,7 @@ import "reflect-metadata";
 import { AppOptions } from "./appOptions";
 import { BaseController } from "../controllerLib/baseController";
 import { Container } from "inversify";
+import { Module } from "../containerLib/containerModule";
 
 export class App {
   private _app: express.Application;
@@ -29,6 +30,15 @@ export class App {
     const options = new AppOptions();
     fn(options);
     return new App(options);
+  }
+
+  regisModules(...modules: Module[]) {
+    this.serviceContainer.load(
+      ...modules.map((m) => {
+        return m.getModule();
+      }),
+    );
+    return this;
   }
 
   mapController(controllers: any[]) {
