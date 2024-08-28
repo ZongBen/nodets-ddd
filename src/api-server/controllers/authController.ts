@@ -16,7 +16,8 @@ export class AuthController extends BaseController {
   }
 
   private async register(req: Request, res: Response, next: NextFunction) {
-    const command = new RegisterCommand("account", "password", "username");
+    const { account, password, username } = req.body;
+    const command = new RegisterCommand(account, password, username);
     const result = await this._sender.send(command);
     res.send(result);
     next();

@@ -1,12 +1,12 @@
 import { DataSource, DataSourceOptions } from "typeorm";
 
 export class TypeORM {
-  static createConnection(options: DataSourceOptions) {
+  static initDB(options: DataSourceOptions) {
     const appDataSource = new DataSource(options);
     appDataSource
       .initialize()
-      .then(() => console.log("Connection to database established"))
-      .catch((err) => console.error("Error connecting to database", err));
+      .then(() => console.log("Database initialized"))
+      .catch((err) => console.error("Error to initialized", err));
     return appDataSource;
   }
 }

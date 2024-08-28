@@ -4,7 +4,6 @@ import { MediatorModule } from "../lib/mediatorLib/mediatorModule";
 import { exceptionMiddleware } from "../lib/middlewareLib/exceptionMiddleware";
 import { reqMiddleware } from "../lib/middlewareLib/reqMiddleware";
 import { TypeORM } from "../lib/typeORMLib/typeORM";
-import { TypeORMModule } from "../lib/typeORMLib/typeORMModule";
 import { HandlerMap } from "./applicationLayer/handlerMap";
 import { AuthController } from "./controllers/authController";
 import { db_entities } from "./infraLayer/dbEntities";
@@ -25,8 +24,11 @@ const app = App.createBuilder((opt) => {
       method: "POST",
     },
   ];
+  opt.container = {
+    autoBindInjectable: true,
+  };
 });
-const orm = TypeORM.createConnection({
+TypeORM.initDB({
   type: "mssql",
   host: app.env.DB_HOST,
   username: app.env.DB_USER,
@@ -39,10 +41,7 @@ const orm = TypeORM.createConnection({
     trustServerCertificate: true,
   },
 });
-app.regisModules(
-  new MediatorModule(app.serviceContainer, HandlerMap),
-  new TypeORMModule(orm),
-);
+app.regisModules(new MediatorModule(app.serviceContainer, HandlerMap));
 app.useJsonParser();
 app.useMiddleware(reqMiddleware);
 app.useMiddleware(exceptionMiddleware);
