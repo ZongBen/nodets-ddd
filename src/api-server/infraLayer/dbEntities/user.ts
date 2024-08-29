@@ -6,9 +6,6 @@ import { BaseModel } from "./baseModel";
 })
 export class User extends BaseModel {
   @PrimaryColumn()
-  id!: string;
-
-  @Column()
   account!: string;
 
   @Column()

@@ -1,27 +1,15 @@
 export class UserRoot {
-  id: string;
   account: string;
   password: string;
   username: string;
 
-  private constructor(
-    id: string,
-    account: string,
-    password: string,
-    username: string,
-  ) {
-    this.id = id;
+  private constructor(account: string, password: string, username: string) {
     this.account = account;
     this.password = password;
     this.username = username;
   }
 
-  static create(
-    id: string,
-    account: string,
-    password: string,
-    username: string,
-  ): UserRoot {
-    return new UserRoot(id, account, password, username);
+  static create(account: string, password: string, username: string): UserRoot {
+    return new UserRoot(account, password, username);
   }
 }
