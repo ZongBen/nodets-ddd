@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction } from "express";
 import { BaseController } from "../../lib/controllerLib/baseController";
 import { inject } from "inversify";
 import { MEDIATOR_TYPES } from "../../lib/mediatorLib/types";
@@ -15,7 +15,7 @@ export class AuthController extends BaseController {
     super();
   }
 
-  private async register(req: Request, res: Response, next: NextFunction) {
+  async register(req: any, res: any, next: NextFunction) {
     const { account, password, username } = req.body;
     const command = new RegisterCommand(account, password, username);
     const result = await this._sender.send(command);
@@ -23,15 +23,15 @@ export class AuthController extends BaseController {
     next();
   }
 
-  private async error(req: Request, res: Response, next: NextFunction) {
-    throw "error";
+  async error(req: any, res: any, next: NextFunction) {
+    throw "test-error";
   }
 
-  private async login(req: Request, res: Response, next: NextFunction) {
-    console.log("login");
-    const command = new LoginCommand("account", "password");
+  async login(req: any, res: any, next: NextFunction) {
+    const { account, password } = req.body;
+    const command = new LoginCommand(account, password);
     const reuslt = await this._sender.send(command);
-    res.send(reuslt);
+    res.locals.result = reuslt;
     next();
   }
 

@@ -7,7 +7,7 @@ export function responseMiddleware(
 ) {
   const { result } = res.locals;
   if (result.status != 200) {
-    res.status(result.status).send(result.message);
+    res.status(result.status).send({ msg: result.message });
   } else {
     res.status(result.status).send(result.data);
   }

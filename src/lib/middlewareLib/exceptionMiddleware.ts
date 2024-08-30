@@ -1,12 +1,12 @@
 import type { Request, Response, NextFunction } from "express";
 
 export function exceptionMiddleware(
-  error: Error,
+  err: Error,
   _req: Request,
   res: Response,
   next: NextFunction,
 ) {
-  console.error(error);
-  res.status(500).json({ errors: ["Unexpected Error"] });
+  console.error(err);
+  res.status(500).send({ msg: "Internal Server Error" });
   next();
 }

@@ -2,6 +2,7 @@ import { injectable } from "inversify";
 import { IUserRepository } from "../../applicationLayer/persistence/IUserRepository";
 import { UserRoot } from "../../domainLayer/user/userRoot";
 import { User } from "../dbEntities/user";
+import { IJwTokenHelper } from "../../../lib/jwTokenLib/interfaces/IJwTokenHelper";
 
 @injectable()
 export class UserRepository implements IUserRepository {
@@ -18,5 +19,10 @@ export class UserRepository implements IUserRepository {
     const user = await User.findOneBy({ account });
     if (!user) return null;
     return UserRoot.create(user.account, user.password, user.name);
+  }
+
+  async getValidToken(user: UserRoot, jwt: IJwTokenHelper): Promise<string> {
+    const payload = { account: user.account };
+    return jwt.generateToken(payload);
   }
 }

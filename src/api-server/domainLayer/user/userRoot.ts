@@ -1,3 +1,5 @@
+import { CryptoService } from "../../applicationLayer/services/cryptoService";
+
 export class UserRoot {
   account: string;
   password: string;
@@ -11,5 +13,9 @@ export class UserRoot {
 
   static create(account: string, password: string, username: string): UserRoot {
     return new UserRoot(account, password, username);
+  }
+
+  async isPasswordCorrect(password: string): Promise<boolean> {
+    return await CryptoService.compare(password, this.password);
   }
 }
