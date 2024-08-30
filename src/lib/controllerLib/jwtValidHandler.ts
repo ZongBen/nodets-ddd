@@ -9,12 +9,13 @@ export function jwtValidHandler(secret: string) {
       return;
     }
     token = token.slice(7, token.length);
-    const payload = jwt.verify(token, secret);
-    if (!payload) {
-      res.status(401).send("Unauthorized");
+    try {
+      const payload = jwt.verify(token, secret);
+      res.locals.jwtPayload = payload;
+      next();
+    } catch (err) {
+      res.status(401).send({ msg: "Unauthorized" });
       return;
     }
-    res.locals.jwtPayload = payload;
-    next();
   };
 }

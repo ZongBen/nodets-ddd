@@ -1,19 +1,10 @@
 import { NextFunction } from "express";
 import { BaseController } from "../../lib/controllerLib/baseController";
-import { inject } from "inversify";
-import { MEDIATOR_TYPES } from "../../lib/mediatorLib/types";
-import { ISender } from "../../lib/mediatorLib/interfaces/ISender";
 import { RegisterCommand } from "../applicationLayer/useCase/command/register/registerCommand";
 import { LoginCommand } from "../applicationLayer/useCase/command/login/loginCommand";
 
 export class AuthController extends BaseController {
   apiPath: string = "/auth";
-
-  constructor(
-    @inject(MEDIATOR_TYPES.ISender) private readonly _sender: ISender,
-  ) {
-    super();
-  }
 
   async register(req: any, res: any, next: NextFunction) {
     const { account, password, username } = req.body;
