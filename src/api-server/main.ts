@@ -16,7 +16,7 @@ const app = App.createBuilder((opt) => {
   opt.allowAnonymousPath = [
     {
       path: "/auth/*",
-      method: "^GET|POST|PUT|DELETE|PATCH$",
+      method: "^GET|POST$",
     },
   ];
   opt.container = {
