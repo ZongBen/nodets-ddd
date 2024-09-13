@@ -3,4 +3,5 @@ export const MEDIATOR_TYPES = {
   IMediatorMap: Symbol.for("IMediatorMap"),
   ISender: Symbol.for("ISender"),
   IPublisher: Symbol.for("IPublisher"),
+  Pipeline: Symbol.for("Pipeline"),
 };

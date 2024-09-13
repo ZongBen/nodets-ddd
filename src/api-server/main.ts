@@ -1,5 +1,6 @@
 import { App } from "../lib/bootstrapLib/app";
 import { jwtValidHandler } from "../lib/controllerLib/jwtValidHandler";
+import { mediatorPipeline } from "../lib/controllerLib/pipeline";
 import { JwTokenModule } from "../lib/jwTokenLib/jwTokenModule";
 import { JwTokenSettings } from "../lib/jwTokenLib/jwTokenSettings";
 import { MediatorModule } from "../lib/mediatorLib/mediatorModule";
@@ -31,7 +32,7 @@ TypeORM.initDB({
   entities: db_entities,
 });
 app.regisModules(
-  new MediatorModule(app.serviceContainer, HandlerMap),
+  new MediatorModule(app.serviceContainer, HandlerMap, mediatorPipeline),
   new JwTokenModule(
     new JwTokenSettings(app.env.JWT_SECRET, {
       expiresIn: app.env.JWT_EXPIRES_IN,

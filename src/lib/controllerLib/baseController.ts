@@ -1,7 +1,8 @@
-import { Router } from "express";
+import { NextFunction, Router } from "express";
 import { inject, injectable } from "inversify";
 import { MEDIATOR_TYPES } from "../mediatorLib/types";
 import { ISender } from "../mediatorLib/interfaces/ISender";
+import { Result, ValidationError, validationResult } from "express-validator";
 
 @injectable()
 export abstract class BaseController {
@@ -25,5 +26,22 @@ export abstract class BaseController {
 
   action(fn: Function) {
     return this.asyncWrapper(this.bind(this, fn));
+  }
+
+  validate(rule: any, handler: (error: Result<ValidationError>) => string[]) {
+    return [
+      rule,
+      (req: any, res: any, next: NextFunction) => {
+        const errs = validationResult(req);
+        if (!errs.isEmpty()) {
+          const errMsg = handler(errs);
+          res.status(400).send({
+            errors: errMsg,
+          });
+          return;
+        }
+        next();
+      },
+    ];
   }
 }

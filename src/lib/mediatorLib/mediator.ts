@@ -4,6 +4,7 @@ import type { IReqHandler } from "./interfaces/IReqHandler";
 import type { INotification } from "./interfaces/INotification";
 import { IMediatorMap } from "./interfaces/IMediatorMap";
 import { MEDIATOR_TYPES } from "./types";
+import { MediatorPipe } from "./mediatorPipe";
 
 @injectable()
 export class Mediator implements IMediator {
@@ -11,18 +12,33 @@ export class Mediator implements IMediator {
     @inject(Container) private readonly _container: Container,
     @inject(MEDIATOR_TYPES.IMediatorMap)
     private readonly _mediatorMap: IMediatorMap,
+    @inject(MEDIATOR_TYPES.Pipeline) private readonly _pipeline: any,
   ) {}
 
-  send<TRes>(req: any): Promise<TRes> {
+  async send<TRes>(req: any): Promise<TRes> {
     const handler = this._mediatorMap.get(req.constructor) as new (
       ...args: any[]
     ) => IReqHandler<any, TRes>;
     if (!handler) {
       throw new Error("handler not found");
     }
-    const handlerInstance = this._container.resolve(handler);
-    console.log("send to handler:", handlerInstance.constructor.name);
-    return handlerInstance.handle(req);
+
+    let index = 0;
+    const pipeLength = this._pipeline.length;
+    const next = () => {
+      if (index < pipeLength) {
+        const pipe = this._container.resolve(
+          this._pipeline[index++],
+        ) as MediatorPipe;
+        pipe.handle(req, next);
+      } else {
+        const handlerInstance = this._container.resolve(handler);
+        console.log("send to handler:", handlerInstance.constructor.name);
+        return handlerInstance.handle(req);
+      }
+    };
+
+    return (await next()) as Promise<TRes>;
   }
 
   publish<T extends INotification<T>>(event: T): Promise<void> {

@@ -1,4 +1,4 @@
-import { Container, interfaces } from "inversify";
+import { Container, injectable, interfaces } from "inversify";
 import { Module } from "../containerLib/containerModule";
 import { Mediator } from "./mediator";
 import { IMediatorMap } from "./interfaces/IMediatorMap";
@@ -6,11 +6,13 @@ import { IMediator } from "./interfaces/IMediator";
 import { ISender } from "./interfaces/ISender";
 import { IPublisher } from "./interfaces/IPublisher";
 import { MEDIATOR_TYPES } from "./types";
+import { MediatorPipe } from "./mediatorPipe";
 
 export class MediatorModule extends Module {
   constructor(
     private readonly _container: Container,
     private readonly _mediatorMap: any,
+    private readonly _pipeline: (typeof MediatorPipe)[],
   ) {
     super();
   }
@@ -30,6 +32,9 @@ export class MediatorModule extends Module {
         .to(Mediator)
         .inTransientScope();
       bind<Container>(Container).toConstantValue(this._container);
+      bind<(typeof MediatorPipe)[]>(MEDIATOR_TYPES.Pipeline).toConstantValue(
+        this._pipeline,
+      );
     });
   }
 }
