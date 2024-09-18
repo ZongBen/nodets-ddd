@@ -10,7 +10,6 @@ export class AuthController extends BaseController {
     const { account, password, username } = req.body;
     const command = new RegisterCommand(account, password, username);
     const result = await this._sender.send(command);
-    console.log("result:", result);
     res.locals.result = result;
     next();
   }

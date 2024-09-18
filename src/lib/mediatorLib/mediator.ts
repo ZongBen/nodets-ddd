@@ -15,7 +15,7 @@ export class Mediator implements IMediator {
     @inject(MEDIATOR_TYPES.Pipeline) private readonly _pipeline: any,
   ) {}
 
-  async send<TRes>(req: any): Promise<TRes> {
+  send<TRes>(req: any): Promise<TRes> {
     const handler = this._mediatorMap.get(req.constructor) as new (
       ...args: any[]
     ) => IReqHandler<any, TRes>;
@@ -25,20 +25,20 @@ export class Mediator implements IMediator {
 
     let index = 0;
     const pipeLength = this._pipeline.length;
-    const next = () => {
+    const next = async () => {
       if (index < pipeLength) {
         const pipe = this._container.resolve(
           this._pipeline[index++],
         ) as MediatorPipe;
-        pipe.handle(req, next);
+        return await pipe.handle(req, next);
       } else {
         const handlerInstance = this._container.resolve(handler);
         console.log("send to handler:", handlerInstance.constructor.name);
-        return handlerInstance.handle(req);
+        return await handlerInstance.handle(req);
       }
     };
 
-    return (await next()) as Promise<TRes>;
+    return next();
   }
 
   publish<T extends INotification<T>>(event: T): Promise<void> {
