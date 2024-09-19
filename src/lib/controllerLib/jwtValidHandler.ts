@@ -11,7 +11,7 @@ export function jwtValidHandler(secret: string) {
     token = token.slice(7, token.length);
     try {
       const payload = jwt.verify(token, secret);
-      res.locals.jwtPayload = payload;
+      res.locals.jwt = payload;
       next();
     } catch (err) {
       res.status(401).send({ msg: "Unauthorized" });

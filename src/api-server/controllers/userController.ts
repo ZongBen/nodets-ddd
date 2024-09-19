@@ -5,7 +5,7 @@ export class UserController extends BaseController {
   apiPath: string = "/user";
 
   async getUser(_req: any, res: any, next: any) {
-    const { account } = res.locals.jwtPayload;
+    const { account } = res.locals.jwt;
     const query = new GetUserQuery(account);
     const result = await this._sender.send(query);
     res.locals.result = result;

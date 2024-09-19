@@ -4,6 +4,8 @@ import { RegisterCommand } from "../applicationLayer/useCase/command/register/re
 import { LoginCommand } from "../applicationLayer/useCase/command/login/loginCommand";
 import { LoginReq } from "../contract/auth/login/loginReq";
 import { RegisterReq } from "../contract/auth/register/registerReq";
+import { loginRule } from "../contract/auth/login/loginRule";
+import { registerRule } from "../contract/auth/register/registerRule";
 
 export class AuthController extends BaseController {
   apiPath: string = "/auth";
@@ -29,8 +31,16 @@ export class AuthController extends BaseController {
   }
 
   mapRoutes() {
-    this.router.post("/register", this.action(this.register));
-    this.router.post("/login", this.action(this.login));
+    this.router.post(
+      "/register",
+      this.validate(registerRule),
+      this.action(this.register),
+    );
+    this.router.post(
+      "/login",
+      this.validate(loginRule),
+      this.action(this.login),
+    );
     this.router.get("/error", this.action(this.error));
     return this.router;
   }
