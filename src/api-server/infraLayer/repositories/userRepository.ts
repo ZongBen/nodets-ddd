@@ -25,7 +25,7 @@ export class UserRepository implements IUserRepository {
     });
   }
 
-  async getValidToken(user: UserRoot, jwt: IJwTokenHelper): Promise<string> {
+  getValidToken(user: UserRoot, jwt: IJwTokenHelper): string {
     const payload = { account: user.account };
     return jwt.generateToken(payload);
   }

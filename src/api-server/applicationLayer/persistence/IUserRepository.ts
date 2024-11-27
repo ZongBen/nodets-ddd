@@ -4,5 +4,5 @@ import { UserRoot } from "../../domainLayer/user/userRoot";
 export interface IUserRepository {
   create(user: UserRoot): Promise<UserRoot>;
   getByAccount(account: string): Promise<UserRoot | null>;
-  getValidToken(user: UserRoot, jwt: IJwTokenHelper): Promise<string>;
+  getValidToken(user: UserRoot, jwt: IJwTokenHelper): string;
 }

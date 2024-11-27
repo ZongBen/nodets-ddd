@@ -30,7 +30,7 @@ export class LoginHandler implements IReqHandler<LoginCommand, any> {
       return new LoginFailError();
     }
 
-    const token = await this._userRepository.getValidToken(user, this._jwt);
+    const token = this._userRepository.getValidToken(user, this._jwt);
 
     return new SuccessReturn({ token });
   }

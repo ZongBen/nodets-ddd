@@ -74,7 +74,7 @@ describe("LoginHandler", () => {
 
     mockUserRepository.getValidToken = jest
       .fn(mockUserRepository.getValidToken)
-      .mockResolvedValue("token");
+      .mockReturnValue("token");
 
     const loginHandler = new LoginHandler(
       mockPublisher,
