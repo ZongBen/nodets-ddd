@@ -1,8 +1,8 @@
 import { IJwTokenHelper } from "../../../../../lib/jwTokenLib/interfaces/IJwTokenHelper";
 import { IPublisher } from "../../../../../lib/mediatorLib/interfaces/IPublisher";
-import { OkResponse } from "../../../../applicationLayer/okResponse";
 import { IUserRepository } from "../../../../applicationLayer/persistence/IUserRepository";
 import { CryptoService } from "../../../../applicationLayer/services/cryptoService";
+import { SuccessReturn } from "../../../../applicationLayer/SuccessReturn";
 import { LoginFailError } from "../../../../applicationLayer/useCase/command/login/loginFailError";
 import { LoginHandler } from "../../../../applicationLayer/useCase/command/login/loginHandler";
 import { UserRoot } from "../../../../domainLayer/user/userRoot";
@@ -78,7 +78,7 @@ describe("LoginHandler", () => {
       password: "password",
     });
 
-    expect(result).toBeInstanceOf(OkResponse);
+    expect(result).toBeInstanceOf(SuccessReturn);
     expect(mockPublisher.publish).not.toHaveBeenCalled();
   });
 });

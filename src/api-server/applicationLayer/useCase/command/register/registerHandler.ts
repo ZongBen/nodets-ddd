@@ -5,9 +5,9 @@ import { UserRepository } from "../../../../infraLayer/repositories/userReposito
 import { IUserRepository } from "../../../persistence/IUserRepository";
 import { UserRoot } from "../../../../domainLayer/user/userRoot";
 import { UserExsistError } from "./userExsistError";
-import { OkResponse } from "../../../okResponse";
 import { CryptoService } from "../../../services/cryptoService";
 import { RegisterResult } from "./registerResult";
+import { SuccessReturn } from "../../../SuccessReturn";
 
 @injectable()
 export class RegisterHandler implements IReqHandler<RegisterCommand, any> {
@@ -22,8 +22,8 @@ export class RegisterHandler implements IReqHandler<RegisterCommand, any> {
       return new UserExsistError();
     }
     const hashedPassword = await CryptoService.hash(req.password);
-    const userRoot = UserRoot.create(req.account, hashedPassword, req.userName);
+    const userRoot = UserRoot.create(req.account, hashedPassword, req.username);
     const user = await this._userRepository.create(userRoot);
-    return new OkResponse(new RegisterResult(user.account, user.username));
+    return new SuccessReturn(new RegisterResult(user.account, user.username));
   }
 }

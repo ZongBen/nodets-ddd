@@ -12,21 +12,28 @@ export class AuthController extends BaseController {
 
   async register(req: any, res: any, next: NextFunction) {
     const { account, password, username } = req.body as RegisterReq;
-    const command = new RegisterCommand(account, password, username);
-    const result = await this._sender.send(command);
-    res.locals.result = result;
+    const command = new RegisterCommand({
+      account,
+      password,
+      username
+    });
+    const ret = await this._sender.send(command);
+    this.sendResult(res, ret);
     next();
   }
 
-  async error(req: any, res: any, next: NextFunction) {
+  async error(_req: any, _res: any, _next: NextFunction) {
     throw "test-error";
   }
 
   async login(req: any, res: any, next: NextFunction) {
     const { account, password } = req.body as LoginReq;
-    const command = new LoginCommand(account, password);
-    const reuslt = await this._sender.send(command);
-    res.locals.result = reuslt;
+    const command = new LoginCommand({
+      account,
+      password,
+    });
+    const ret = await this._sender.send(command);
+    this.sendResult(res, ret);
     next();
   }
 

@@ -4,8 +4,8 @@ import { GetUserQuery } from "./getUserQuery";
 import { UserRepository } from "../../../../infraLayer/repositories/userRepository";
 import { IUserRepository } from "../../../persistence/IUserRepository";
 import { UserNotExsistError } from "./userNotExsistError";
-import { OkResponse } from "../../../okResponse";
 import { GetUserResult } from "./getUserResult";
+import { SuccessReturn } from "../../../SuccessReturn";
 
 @injectable()
 export class GetUserHandler implements IReqHandler<GetUserQuery, any> {
@@ -18,6 +18,6 @@ export class GetUserHandler implements IReqHandler<GetUserQuery, any> {
       return new UserNotExsistError();
     }
 
-    return new OkResponse(new GetUserResult(user.account, user.username));
+    return new SuccessReturn(new GetUserResult(user.account, user.username));
   }
 }

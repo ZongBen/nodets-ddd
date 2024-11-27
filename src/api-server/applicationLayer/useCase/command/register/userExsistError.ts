@@ -1,5 +1,8 @@
-import { BaseError } from "../../../baseError";
+import { FailReturn } from "../../../FailReturn";
+import { MESSAGE_CODES } from "../../../messageCodes";
 
-export class UserExsistError extends BaseError {
-  message: string = "User already exsist";
+export class UserExsistError extends FailReturn {
+  constructor() {
+    super(MESSAGE_CODES.USER_ALREADY_EXISTS);
+  }
 }

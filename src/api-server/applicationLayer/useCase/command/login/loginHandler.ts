@@ -4,12 +4,12 @@ import { LoginCommand } from "./loginCommand";
 import { MEDIATOR_TYPES } from "../../../../../lib/mediatorLib/types";
 import { IPublisher } from "../../../../../lib/mediatorLib/interfaces/IPublisher";
 import { LoginFailedEvent } from "./events/loginFailedEvent";
-import { OkResponse } from "../../../okResponse";
 import { UserRepository } from "../../../../infraLayer/repositories/userRepository";
 import { LoginFailError } from "./loginFailError";
 import { IUserRepository } from "../../../persistence/IUserRepository";
 import { JWT_TYPES } from "../../../../../lib/jwTokenLib/types";
 import { IJwTokenHelper } from "../../../../../lib/jwTokenLib/interfaces/IJwTokenHelper";
+import { SuccessReturn } from "../../../SuccessReturn";
 
 @injectable()
 export class LoginHandler implements IReqHandler<LoginCommand, any> {
@@ -32,6 +32,6 @@ export class LoginHandler implements IReqHandler<LoginCommand, any> {
 
     const token = await this._userRepository.getValidToken(user, this._jwt);
 
-    return new OkResponse({ token });
+    return new SuccessReturn({ token });
   }
 }

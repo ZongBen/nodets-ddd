@@ -1,11 +1,15 @@
 export class RegisterCommand {
   readonly account: string;
   readonly password: string;
-  readonly userName: string;
+  readonly username: string;
 
-  constructor(account: string, password: string, userName: string) {
-    this.account = account;
-    this.password = password;
-    this.userName = userName;
+  constructor(props : {
+    account: string,
+    password: string,
+    username: string
+  }) {
+    this.account = props.account;
+    this.password = props.password;
+    this.username = props.username;
   }
 }

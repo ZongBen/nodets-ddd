@@ -1,5 +1,5 @@
-import { OkResponse } from "../../../../applicationLayer/okResponse";
 import { IUserRepository } from "../../../../applicationLayer/persistence/IUserRepository";
+import { SuccessReturn } from "../../../../applicationLayer/SuccessReturn";
 import { RegisterHandler } from "../../../../applicationLayer/useCase/command/register/registerHandler";
 import { UserExsistError } from "../../../../applicationLayer/useCase/command/register/userExsistError";
 import { UserRoot } from "../../../../domainLayer/user/userRoot";
@@ -20,10 +20,10 @@ describe("registerHandler", () => {
     const result = await registerHandler.handle({
       account: "account",
       password: "password",
-      userName: "userName",
+      username: "username",
     });
 
-    expect(result).toBeInstanceOf(OkResponse);
+    expect(result).toBeInstanceOf(SuccessReturn);
   });
 
   test("when user found then return error", async () => {
@@ -35,7 +35,7 @@ describe("registerHandler", () => {
     const result = await registerHandler.handle({
       account: "account",
       password: "password",
-      userName: "userName",
+      username: "username",
     });
 
     expect(result).toBeInstanceOf(UserExsistError);

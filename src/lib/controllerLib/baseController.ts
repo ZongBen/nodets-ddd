@@ -3,6 +3,7 @@ import { inject, injectable } from "inversify";
 import { MEDIATOR_TYPES } from "../mediatorLib/types";
 import { ISender } from "../mediatorLib/interfaces/ISender";
 import { validationResult } from "express-validator";
+import { BaseReturn } from "../applicationLib/baseReturn";
 
 @injectable()
 export abstract class BaseController {
@@ -14,14 +15,24 @@ export abstract class BaseController {
     @inject(MEDIATOR_TYPES.ISender) protected readonly _sender: ISender,
   ) {}
 
-  private asyncWrapper(fn: any) {
+  private _asyncWrapper(fn: any) {
     return (req: any, res: any, next: any) => {
       Promise.resolve(fn(req, res, next)).catch((err) => next(err));
     };
   }
 
   action(fn: Function) {
-    return this.asyncWrapper(fn.bind(this));
+    return this._asyncWrapper(fn.bind(this));
+  }
+
+  sendResult(res: any, ret: BaseReturn) {
+    if (ret.isSuccess) {
+      res.status(200).send(ret.data);
+    } else {
+      res.status(400).send({
+        msg: ret.messageCode,
+      })
+    }
   }
 
   validate(rule: any) {
