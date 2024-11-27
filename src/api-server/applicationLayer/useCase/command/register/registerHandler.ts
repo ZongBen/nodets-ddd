@@ -22,7 +22,11 @@ export class RegisterHandler implements IReqHandler<RegisterCommand, any> {
       return new UserExsistError();
     }
     const hashedPassword = await CryptoService.hash(req.password);
-    const userRoot = UserRoot.create(req.account, hashedPassword, req.username);
+    const userRoot = UserRoot.create({
+      account: req.account,
+      password: hashedPassword,
+      username: req.username
+    });
     const user = await this._userRepository.create(userRoot);
     return new SuccessReturn(new RegisterResult(user.account, user.username));
   }

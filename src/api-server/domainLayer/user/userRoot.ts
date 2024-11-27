@@ -5,14 +5,22 @@ export class UserRoot {
   password: string;
   username: string;
 
-  private constructor(account: string, password: string, username: string) {
-    this.account = account;
-    this.password = password;
-    this.username = username;
+  private constructor(props: {
+    account: string;
+    password: string;
+    username: string;
+  }) {
+    this.account = props.account;
+    this.password = props.password;
+    this.username = props.username;
   }
 
-  static create(account: string, password: string, username: string): UserRoot {
-    return new UserRoot(account, password, username);
+  static create(props: {
+    account: string;
+    password: string;
+    username: string;
+  }): UserRoot {
+    return new UserRoot(props);
   }
 
   async isPasswordCorrect(password: string): Promise<boolean> {

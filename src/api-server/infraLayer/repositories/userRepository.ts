@@ -18,7 +18,11 @@ export class UserRepository implements IUserRepository {
   async getByAccount(account: string): Promise<UserRoot | null> {
     const user = await User.findOneBy({ account });
     if (!user) return null;
-    return UserRoot.create(user.account, user.password, user.name);
+    return UserRoot.create({
+      account: user.account,
+      password: user.password,
+      username: user.name,
+    });
   }
 
   async getValidToken(user: UserRoot, jwt: IJwTokenHelper): Promise<string> {
